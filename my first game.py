@@ -270,7 +270,7 @@ class Player(pygame.sprite.Sprite):
             if pygame.key.get_pressed()[pygame.K_UP]:
                 self.image = Tank_1_u
                 self.rect.y -= self.speed_y
-                if pygame.sprite.spritecollideany(self, horizontal_borders):
+                if pygame.sprite.spritecollideany(self, horizontal_borders) or pygame.sprite.collide_rect(self, player_2):
                     self.rect.y += self.speed_y                
                 if self.rect.top < 100:
                     self.rect.top = 100
@@ -278,7 +278,7 @@ class Player(pygame.sprite.Sprite):
             if pygame.key.get_pressed()[pygame.K_w]:
                 self.image = Tank_2_u
                 self.rect.y -= self.speed_y
-                if pygame.sprite.spritecollideany(self, horizontal_borders):
+                if pygame.sprite.spritecollideany(self, horizontal_borders) or pygame.sprite.collide_rect(self, player_1):
                     self.rect.y += self.speed_y       
                 if self.rect.top < 100:
                     self.rect.top = 100            
@@ -288,7 +288,7 @@ class Player(pygame.sprite.Sprite):
             if pygame.key.get_pressed()[pygame.K_DOWN]:
                 self.image = Tank_1_d
                 self.rect.y += self.speed_y
-                if pygame.sprite.spritecollideany(self, horizontal_borders):
+                if pygame.sprite.spritecollideany(self, horizontal_borders) or pygame.sprite.collide_rect(self, player_2):
                     self.rect.y -= self.speed_y
                 if self.rect.bottom > width + 100:
                     self.rect.bottom = width + 100
@@ -296,7 +296,7 @@ class Player(pygame.sprite.Sprite):
             if pygame.key.get_pressed()[pygame.K_s]:
                 self.image = Tank_2_d
                 self.rect.y += self.speed_y
-                if pygame.sprite.spritecollideany(self, horizontal_borders):
+                if pygame.sprite.spritecollideany(self, horizontal_borders) or pygame.sprite.collide_rect(self, player_1):
                     self.rect.y -= self.speed_y                
                 if self.rect.bottom > width + 100:
                     self.rect.bottom = width + 100            
@@ -314,7 +314,7 @@ class Player(pygame.sprite.Sprite):
             if pygame.key.get_pressed()[pygame.K_a]:
                 self.image = Tank_2_l
                 self.rect.x -= self.speed_x
-                if pygame.sprite.spritecollideany(self, vertical_borders):
+                if pygame.sprite.spritecollideany(self, vertical_borders) or pygame.sprite.collide_rect(self, player_1):
                     self.rect.x += self.speed_x                
                 if self.rect.left < 200:
                     self.rect.left = 200            
@@ -324,7 +324,7 @@ class Player(pygame.sprite.Sprite):
             if pygame.key.get_pressed()[pygame.K_RIGHT]:
                 self.image = Tank_1_r
                 self.rect.x += self.speed_x
-                if pygame.sprite.spritecollideany(self, vertical_borders):
+                if pygame.sprite.spritecollideany(self, vertical_borders) or pygame.sprite.collide_rect(self, player_2):
                     self.rect.x -= self.speed_x
                 if self.rect.right > height + 300:
                     self.rect.right = height + 300
@@ -332,7 +332,7 @@ class Player(pygame.sprite.Sprite):
             if pygame.key.get_pressed()[pygame.K_d]:
                 self.image = Tank_2_r
                 self.rect.x += self.speed_x
-                if pygame.sprite.spritecollideany(self, vertical_borders):
+                if pygame.sprite.spritecollideany(self, vertical_borders) or pygame.sprite.collide_rect(self, player_1):
                     self.rect.x -= self.speed_x                
                 if self.rect.right > height + 300:
                     self.rect.right = height + 300
@@ -418,16 +418,15 @@ class Border(pygame.sprite.Sprite):
             self.rect = pygame.Rect(x1, y1, x2 - x1, 1)
 
 
-PlayerGroup = pygame.sprite.Group()
-player_1 = Player(1)
-player_2 = Player(2)
-#PlayerGroup.add(player_1)
-#PlayerGroup.add(player_2)
-all_sprites.add(player_1)
-all_sprites.add(player_2)
-
-
 def cyckle():
+    PlayerGroup = pygame.sprite.Group()
+    global player_1
+    player_1 = Player(1)
+    global player_2
+    player_2 = Player(2)
+    all_sprites.add(player_1)
+    all_sprites.add(player_2)
+    
     Border(200, 99, height + 301, 99)
     Border(200, width + 100, height + 300, width - 100)
     Border(200, 100, 200, width + 100)
@@ -437,6 +436,7 @@ def cyckle():
     Border(WIDTH - 1000, 400, WIDTH - 750, 400)
     Border(WIDTH - 750, 600, WIDTH - 500, 600)
     Border(WIDTH - 750, 400, WIDTH - 750, 600)
+    
     sound_boom = pygame.mixer.Sound('data/Выстрел.wav')
     sound_win = pygame.mixer.Sound('data/Победа.mp3')
     
